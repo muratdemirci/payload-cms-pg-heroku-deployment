@@ -1,6 +1,3 @@
-todo: buraya heroku ve dotenv içindkei config variables ve özellikleri de eklenmeli. table şeklinde konmalı.
-
-
 # Payload Website Template
 
 This is the official [Payload Website Template](https://github.com/payloadcms/payload/blob/main/templates/website). Use it to power websites, blogs, or portfolios from small to enterprise. This repo includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website.
@@ -13,16 +10,35 @@ This template is right for you if you are working on:
 
 Core features:
 
-- [Pre-configured Payload Config](#how-it-works)
-- [Authentication](#users-authentication)
-- [Access Control](#access-control)
-- [Premium Content](#premium-content)
-- [Comments](#comments)
-- [Layout Builder](#layout-builder)
-- [Draft Preview](#draft-preview)
-- [Redirects](#redirects)
-- [SEO](#seo)
-- [Website](#website)
+- [Payload Website Template](#payload-website-template)
+  - [Quick Start](#quick-start)
+    - [Clone](#clone)
+      - [Method 1 (recommended)](#method-1-recommended)
+      - [Method 2](#method-2)
+      - [Method 3](#method-3)
+    - [Development](#development)
+  - [Enviroment Variables](#enviroment-variables)
+  - [Config files](#config-files)
+  - [How it works](#how-it-works)
+    - [Collections](#collections)
+    - [Globals](#globals)
+  - [Access control](#access-control)
+  - [Premium Content](#premium-content)
+  - [Comments](#comments)
+  - [Layout Builder](#layout-builder)
+  - [Draft Preview](#draft-preview)
+  - [SEO](#seo)
+  - [Redirects](#redirects)
+  - [Website](#website)
+    - [Cache](#cache)
+    - [Eject](#eject)
+  - [Development](#development-1)
+    - [Docker](#docker)
+    - [Seed](#seed)
+    - [Conflicting routes](#conflicting-routes)
+  - [Production](#production)
+    - [Deployment](#deployment)
+  - [Questions](#questions)
 
 ## Quick Start
 
@@ -56,6 +72,59 @@ If you have not done so already, you need to have standalone copy of this repo o
 1. `open http://localhost:3000` to open the app in your browser
 
 That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+
+## Enviroment Variables
+| Variable name             | Example                          | Description                                                                                                                   |
+|---------------------------|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| DATABASE_URI              | localhost or domain.com/postgres | Location and access method for a specific database.                                                                           |
+| DATABASE_URL              | localhost or domain.com/postgres | Location and access method for a specific database.                                                                           |
+| NEXT_PUBLIC_SERVER_URL    | localhost or domain.com          | Holds the URL of the server where your Next.js application is hosted.                                                         |
+| NODE_ENV                  | production                       | Node.js used to indicate the environment in which the application is running, such as 'development', 'production', or 'test'. |
+| PAYLOAD_CONFIG_PATH       | dist/payload.config.js           | Specifies the path to the configuration file for the payload of a specific application or service.                            |
+| PAYLOAD_PUBLIC_SERVER_URL | localhost or domain.com          | Holds the public URL of the server where your Payload CMS application is hosted.                                              |
+| PAYLOAD_SECRET            | loremipsumdolarsitmurat          | Store a secret key for securing or encrypting data in Payload CMS.                                                            |
+| PAYLOAD_SEED              | false                            | Used in Payload CMS to seed the database with initial data for development or testing purposes.                               |
+| PAYLOAD_DROP_DATABASE     | false                            | Used in Payload CMS to determine whether to drop (delete) the entire database, typically used during testing or development.  |
+
+## Config files
+
+This is a `tsconfig.json` file, which is a configuration file for a TypeScript project. It specifies the root files and the compiler options required to compile the project.
+
+```json
+- `compilerOptions`: This property contains settings that inform the compiler how to compile the code.
+  - `target`: Specifies the ECMAScript target version. The target is "es5".
+  - `lib`: List of library files to be included in the compilation. It includes DOM, DOM iterable, and ESNext libraries.
+  - `allowJs`: Allows JavaScript files to be compiled. It's set to true.
+  - `strict`: Enables all strict type-checking options. It's set to false.
+  - `esModuleInterop`: Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. It's set to true.
+  - `skipLibCheck`: Skips type checking of declaration files. It's set to true.
+  - `outDir`: Specifies the output directory for the compiled files. The output directory is "./dist".
+  - `rootDir`: Specifies the root directory of input files. The root directory is "./src".
+  - `jsx`: Specifies JSX code generation. It's set to "react".
+  - `sourceMap`: Generates corresponding '.map' file. It's set to true.
+  - `resolveJsonModule`: Includes modules imported with '.json' extension. It's set to true.
+  - `paths`: A series of entries which re-map imports to lookup locations relative to the 'baseUrl'.
+- `include`: Instructs the compiler to include these files in the compilation process. It includes all TypeScript files in the "src" directory.
+- `exclude`: Instructs the compiler to exclude these files from the compilation process. It excludes all files in the "node_modules" directory.
+- `ts-node`: This property contains settings for the ts-node, a TypeScript execution engine and REPL for Node.js. The `transpileOnly` option is set to true, which means ts-node will only do transpilation, but not type checking.
+```
+
+This is a `tsconfig.server.json` file, which is a configuration file for a TypeScript project. This specific configuration file is extending another `tsconfig.json` file located in the same directory, and it's overriding or adding some additional options.
+
+```json
+- `extends`: This property is used to inherit configuration from another `tsconfig.json` file. In this case, it's extending the `tsconfig.json` file in the same directory.
+
+- `compilerOptions`: This property contains settings that inform the compiler how to compile the code.
+  - `module`: Specifies the module system for the project. The module system is "commonjs".
+  - `outDir`: Specifies the output directory for the compiled files. The output directory is "dist".
+  - `noEmit`: Controls if any output files are created. It's set to false, so output files will be created.
+  - `jsx`: Specifies JSX code generation. It's set to "react".
+  - `sourceMap`: Generates corresponding '.map' file. It's set to true.
+
+- `include`: Instructs the compiler to include these files in the compilation process. It includes "src/server.ts" and "src/payload.config.ts" files.
+
+This configuration is likely used for a server-side part of a project, as it includes a server file and uses CommonJS modules, which are typically used in a Node.js environment.
+```
 
 ## How it works
 
